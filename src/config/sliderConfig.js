@@ -29,13 +29,13 @@ const sliderConfig = {
         initialLoadDuration: 2.5,
 
         // Duration of slide transitions
-        slideTransitionDuration: 1.5,
+        slideTransitionDuration: 1,
 
         // Duration of counter and title transitions
         counterTransitionDuration: 1,
 
         // Delay between staggered animations
-        staggerDelay: 0.25,
+        staggerDelay: 0.15,
 
         // Scale factor for the container during animation
         containerScale: 5.178

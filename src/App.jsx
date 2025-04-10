@@ -1,9 +1,11 @@
-import Slider from './components/Slider'
+import Slider from "./components/Slider";
+import About from "./components/About";
 
 function App() {
   return (
     <Slider />
-  )
+    // <About />
+  );
 }
 
-export default App
+export default App;

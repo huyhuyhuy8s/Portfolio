@@ -8,11 +8,12 @@
 // Titles for each slide
 const titles =
     [
-        "Lens of Eternity",
-        "Crimson Dream Capture",
-        "Mirrored Starlight Echoes",
-        "Whispers of Departure",
-        "Sunlit Coastal Reverie",
+        "Newshub - A Newspaper Website",
+        "Came - Cafe Management Website",
+        "Abhishek Jha's portfolio",
+        "Coming soon",
+        "Coming soon",
+        // "Sunlit Coastal Reverie",
         // "Veil of Forgotten Frames",
         // "Shades of Timeless Click",
         // "Enigma in Scarlet Glow",
@@ -41,7 +42,7 @@ const sliderConfig = {
         slideTransitionDuration: 1,
 
         // Duration of slide transitions
-        aboveTransitionDuration: 1.5,
+        aboveTransitionDuration: 1.25,
 
         // Duration of counter and title transitions
         counterTransitionDuration: 1,

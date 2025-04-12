@@ -1,0 +1,52 @@
+@use "variable" as *
+
+.about
+  color: #fff
+  display: flex
+  flex-direction: column
+  width: 100%
+  overflow: scroll
+  position: relative
+  scrollbar-width: none
+
+  &-me
+    display: flex
+    flex-direction: column
+    gap: 3.2292vw
+
+  &-wrapper
+    display: flex
+    flex-direction: column
+    overflow-y: scroll
+    scrollbar-width: none
+    gap: 14.5833vw
+
+    > section
+      width: 90%
+
+      .content
+        margin-top: 4.1667vw
+        margin-left: 82px
+        display: flex
+        flex-direction: column
+        gap: 3.2292vw
+
+        li
+          list-style-type: none
+
+      .sub-text
+        color: #666666
+
+    p
+      position: relative
+
+    .outer,
+    .title,
+    .sub-text
+      position: relative
+      display: block
+      overflow: hidden
+      font-size: 100%
+
+      .inner
+        position: relative

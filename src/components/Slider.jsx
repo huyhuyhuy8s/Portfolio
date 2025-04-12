@@ -234,7 +234,7 @@ const Slider = () => {
         const tl = gsap.timeline({ delay: 0 });
         tl.to(".slider-images", {
           top: "-50vh",
-          duration: sliderConfig.animation.aboveTransitionDuration,
+          duration: 1,
           ease: "power4.out",
         });
         tl.fromTo(
@@ -247,7 +247,7 @@ const Slider = () => {
             duration: sliderConfig.animation.aboveTransitionDuration,
             ease: "power4.out",
           },
-          "-=1.5"
+          "-=1"
         );
         tl.to(
           ".screen-alt",
@@ -256,46 +256,40 @@ const Slider = () => {
             duration: sliderConfig.animation.aboveTransitionDuration,
             ease: "power4.out",
           },
-          "-=2.5"
+          "-=2"
         );
         tl.to(
           ".about",
           {
             top: 0,
-            duration: 1,
+            duration: 1.5,
             ease: "expo.inOut",
           },
-          "<"
+          "-=1.5"
+        );
+        tl.fromTo(
+          ".about-wrapper .inner",
+          {
+            top: "5.6458vw",
+          },
+          { top: 0, duration: 1, ease: hop, stagger: 0.125 },
+          "-=0.5"
         );
         tl.to(
           ".slider-title-wrapper, .preview img, .slider-counter>div",
           {
-            top: "-50vh",
+            top: `${sliderConfig.totalSlides * 100}%`,
             duration: 1.5,
             ease: "expo.inOut",
             delay: -1,
           },
-          "-=1"
+          "-=2"
         );
         tl.to(
           ".preview, .slider-indicators",
           {
             "--opacity-prev": 0,
             duration: 1,
-            ease: "expo.inOut",
-          },
-          "<"
-        );
-        tl.to(".slider-title-wrapper, .preview img, .slider-counter>div", {
-          top: "0",
-          duration: 0.5,
-          ease: "expo.inOut",
-        });
-        tl.to(
-          ".preview, .slider-indicators",
-          {
-            "--opacity-prev": 1,
-            duration: 0.5,
             ease: "expo.inOut",
           },
           "<"
@@ -309,8 +303,14 @@ const Slider = () => {
 
   useGSAP((context, contextSafe) => {
     const scroll = new LocomotiveScroll({
-      el: scrollRef.current,
+      el: aboutRef.current,
       smooth: true,
+      mobile: {
+        smooth: true,
+      },
+      tablet: {
+        smooth: true,
+      },
     });
   });
 
@@ -326,9 +326,27 @@ const Slider = () => {
         const tl = gsap.timeline({ delay: 0 });
         tl.to(".screen-alt", {
           opacity: 0,
-          duration: 1,
+          duration: 1.5,
           ease: hop,
         });
+        tl.to(
+          ".slider-title-wrapper, .preview img, .slider-counter>div",
+          {
+            top: "0",
+            duration: 1,
+            ease: "expo.inOut",
+          },
+          "<"
+        );
+        tl.to(
+          ".preview, .slider-indicators",
+          {
+            "--opacity-prev": 1,
+            duration: 1,
+            ease: "expo.inOut",
+          },
+          "<"
+        );
         tl.to(
           ".slider-images",
           {
@@ -620,50 +638,135 @@ const Slider = () => {
       </div>
 
       <div className="about" ref={aboutRef}>
-        <div
-          className="about-wrapper"
-          ref={scrollRef}
-          data-scroll-sticky
-          data-scroll-speed="-2"
-        >
-          <div className="about-me">
+        <div className="about-wrapper" ref={scrollRef}>
+          <section className="about-me">
             <p>
-              I am a dedicated front-end developer intern with hands-on
-              experience in React, JavaScript, and modern web technologies.
+              <span className="outer">
+                <span className="inner">I am a dedicated front-end</span>
+              </span>
+              <span className="outer">
+                <span className="inner">developer intern with hands-on</span>
+              </span>
+              <span className="outer">
+                <span className="inner">experience in React, JavaScript,</span>
+              </span>
+              <span className="outer">
+                <span className="inner">and modern web technologies.</span>
+              </span>
             </p>
             <p>
-              I am always striving to learn about the field's newest and cutting
-              edge technologies and frameworks.
+              <span className="outer">
+                <span className="inner">
+                  I am always striving to learn about
+                </span>
+              </span>
+              <span className="outer">
+                <span className="inner">
+                  the field's newest and cutting edge
+                </span>
+              </span>
+              <span className="outer">
+                <span className="inner">technologies and frameworks.</span>
+              </span>
             </p>
             <p>
-              I am passionate about creating user-friendly interfaces and eager
-              to contribute to innovative web development initiatives.
+              <span className="outer">
+                <span className="inner">I am passionate about creating</span>
+              </span>
+              <span className="outer">
+                <span className="inner">
+                  user-friendly interfaces and eager
+                </span>
+              </span>
+              <span className="outer">
+                <span className="inner">to contribute to innovative web</span>
+              </span>
+              <span className="outer">
+                <span className="inner">development initiatives.</span>
+              </span>
             </p>
-          </div>
-          <div className="work-experiences">
-            <div className="elem experience experiences-1">
-              Freelance Design & Art Director
-              <div className="sub-text">2022 - Present</div>
+          </section>
+          <section className="education">
+            <div className="title">
+              <span className="inner">Education</span>
             </div>
-            <div className="elem experience experiences-2">
-              Senior Designer AKQA Amsterdam
-              <div className="sub-text">2018 - 2022</div>
+            <ul className="content">
+              <li className="elem">
+                <span className="outer">
+                  <span className="inner">
+                    Engineer of Information Technology
+                  </span>
+                </span>
+                <span className="outer">
+                  <span className="inner">HCMC University of Education</span>
+                </span>
+                <span className="outer">
+                  <span className="inner">and Technology</span>
+                </span>
+                <span className="sub-text">
+                  <span className="inner">2022 - 2026</span>
+                </span>
+              </li>
+            </ul>
+          </section>
+          <section className="projects">
+            <div className="title" data-scroll data-scroll-speed="-1.5">
+              <span className="inner">Projects</span>
             </div>
-            <div className="elem experience experiences-3">
-              Designer DDB Tribal Amsterdam
-              <div className="sub-text">2016 - 2018</div>
+            <ul className="content">
+              <li className="elem">
+                <span className="outer">
+                  <span className="inner">Personal Portfolio</span>
+                </span>
+                <span className="outer">
+                  <span className="inner">Based on </span>
+                </span>
+                <span className="sub-text">
+                  <span className="inner">Apr 2025 - Present</span>
+                </span>
+              </li>
+              <li className="elem">
+                <span className="outer">
+                  <span className="inner">Came</span>
+                </span>
+                <span className="outer">
+                  <span className="inner">A Cafe Managements</span>
+                </span>
+                <span className="sub-text">
+                  <span className="inner">Jan 2025 - Present</span>
+                </span>
+              </li>
+              <li className="elem">
+                <span className="outer">
+                  <span className="inner">Newshub</span>
+                </span>
+                <span className="outer">
+                  <span className="inner">Newspaper Hub</span>
+                </span>
+                <span className="sub-text">
+                  <span className="inner">Nov 2024 - Dec 2024</span>
+                </span>
+              </li>
+            </ul>
+          </section>
+          <section className="certifications">
+            <div className="title">
+              <span className="inner">Certifications</span>
             </div>
-            <div className="elem experience experiences-4">
-              Designer Fabrique Amsterdam
-              <div className="sub-text">2015 - 2016</div>
-            </div>
-          </div>
-          <div className="certifications">
-            <div className="elem certification">
-              Full Stack Web Development - University of Helsinki
-              <div className="sub-text">April 2025</div>
-            </div>
-          </div>
+            <ul className="content">
+              <li className="elem certification">
+                <span className="outer">
+                  <span className="inner">Full Stack Web Development</span>
+                </span>
+                <span className="outer">
+                  <span className="inner">University of Helsinki</span>
+                </span>
+                <span className="sub-text">
+                  <span className="inner">April 2025</span>
+                </span>
+              </li>
+            </ul>
+          </section>
         </div>
       </div>
     </div>

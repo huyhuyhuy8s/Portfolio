@@ -21,12 +21,29 @@ const titles =
         // "The Revival Ensemble"
     ]
 
+const exps =
+    [
+        "1",
+        "3",
+        "1",
+        "x",
+        "x",
+        // "Sunlit Coastal Reverie",
+        // "Veil of Forgotten Frames",
+        // "Shades of Timeless Click",
+        // "Enigma in Scarlet Glow",
+        // "Molten Amber Vortex",
+        // "The Revival Ensemble"
+    ]
+
 const sliderConfig = {
     // Number of slides in the slider
     totalSlides: titles.length,
 
     // Titles for each slide
     titles: titles,
+
+    exps: exps,
 
     nav: [
         "Work",

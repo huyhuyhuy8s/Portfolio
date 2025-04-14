@@ -1,0 +1,42 @@
+@use 'sass:math'
+
+@function rem($pixel)
+  @if math.is-unitless($pixel)
+    @return math.div($pixel, 16) * 1rem
+  @else
+    @error 'Don not use unit when using the rem() function, use numbers'
+
+// Static variables
+$clip-polygon: polygon(0 0, 100% 0, 100% 100%, 0% 100%)
+$preview-bg-black: hsl(0,0%,0%,0.5)
+$preview-bg-visible: hsl(0,0%,0%, 0)
+$preview-position: 2.5rem
+$preview-width: 34%
+
+$indicator-size: rem(40)
+$indicator-weight: 200
+
+$exp-size: 1.6667vh
+
+// Dynamic variables
+$height: 2rem
+$title-width: 1rem
+
+// screen breakpoints
+$breakpoints: (
+      xs: 0,
+      sm: rem(565),
+      md: rem(768),
+      lg: rem(1440)
+)
+
+// background-color: #111;
+// background-image: linear-gradient(
+//     rgba(255, 255, 255, 0.07) 2px,
+//     transparent 2px
+//   ),
+//   linear-gradient(90deg, rgba(255, 255, 255, 0.07) 2px, transparent 2px),
+//   linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+//   linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+// background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px
+// background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px

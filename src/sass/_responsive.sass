@@ -1,0 +1,112 @@
+@use 'variable' as *
+@use 'sass:map'
+
+@media screen and (map.get($breakpoints, 'lg') < width)
+  .slider-title
+    height: $title-width + 3rem
+
+    &-wrapper
+      &-title
+        line-height: $title-width + 3rem
+
+  .about
+    .about-wrapper
+
+      .content
+        margin-left: 82px
+
+        .elem
+          font-size: 2.2917vw
+          line-height: 2.7604vw
+
+          .sub-text
+            line-height: 1.6667vw
+            font-size: 1.25vw
+
+      p
+        font-size: 2.8125vw
+        line-height: 3.6458vw
+
+@media screen and (map.get($breakpoints, 'md') < width <= map.get($breakpoints, 'lg'))
+  $height: clamp(#{rem(130), 15vh, #{rem(260)}})
+  .slider-title
+    height: $height
+
+    &-wrapper
+      &-title
+        height: $height
+        line-height: clamp(1, 1.25, 1.5)
+
+  .about
+
+    .about-wrapper
+
+      .content
+        margin-left: rem(82)
+
+        .elem
+          font-size: 2.2917vw
+          line-height: 2.7604vw
+
+          .sub-text
+            line-height: 1.6667vw
+            font-size: 1.25vw
+
+      p
+        font-size: 2.8125vw
+        line-height: 3.6458vw
+
+@media screen and (max-width: map.get($breakpoints, 'md'))
+  $height: clamp(#{rem(173), 20vh, #{rem(346)}})
+
+  .slide-num
+    text-align: left
+    padding-left: 2rem
+    margin-bottom: 2.5rem
+
+  .title
+    font-size: 30px
+
+  .icon,
+  .icon-2
+    padding: 0 1rem
+    font-size: 1rem
+
+  .slider-indicators
+    width: 90%
+
+  .slider-preview
+    left: 50%
+    transform: translateX(-50%)
+    width: 90%
+    bottom: 5rem
+
+  .slider-title
+    height: $height
+
+    &-wrapper
+
+      &-title
+        height: $height
+        line-height: clamp(1, 1.25, 1.5)
+
+  .about
+    &-wrapper
+      margin-left: 15vw
+      padding: 20.7083vw 0
+      width: 90.1042vw
+
+      p
+        font-size: 4.8125vw
+        line-height: 5.6458vw
+
+      > section
+        font-size: 4.8125vw
+
+        .content
+          padding-left: 7vw
+          font-size: 4.2917vw
+
+          .sub-text
+            line-height: 3.6667vw
+            font-size: 3.25vw

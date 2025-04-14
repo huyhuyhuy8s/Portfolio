@@ -1,4 +1,5 @@
 @use "variable" as *
+@use 'sass:math'
 
 .slider
   position: relative
@@ -19,12 +20,12 @@
 
 .slider-counter
   position: absolute
-  bottom: 2em
+  bottom: 2rem
   left: 50%
   transform: translateX(-50%)
-  height: 2.25em
+  height: 2.25rem
   display: flex
-  gap: 0.3em
+  gap: 0.3rem
   clip-path: $clip-polygon
 
   .counter
@@ -35,8 +36,8 @@
     flex: 1
 
     p
-      font-size: 1em
-      line-height: 2.5em
+      font-size: 1rem
+      line-height: 2.5rem
 
 .slider-title
   mix-blend-mode: difference
@@ -45,25 +46,51 @@
   left: 50%
   transform: translate(-50%, -50%)
   width: 100%
-  height: 64px
   clip-path: $clip-polygon
   justify-content: center
+  z-index: 1
 
   &-wrapper
     margin: 0 auto
     position: relative
-    width: 100%
-    max-width: 78vw
     top: 0
     text-align: center
     will-change: transform
     clip-path: $clip-polygon
+    width: fit-content + 1.66667vw
 
-    p
+    &-elem
+      display: flex
+      justify-content: center
+
+    &-title
       position: relative
       display: flex
       align-items: center
       justify-content: center
+      cursor: pointer
+      width: fit-content
+      max-width: 70%
+      $title-width: clamp(#{rem(45)}, 2.8125vw, #{rem(54)})
+      font-size: $title-width
+      $height: clamp(#{rem(64), 4.5vh, #{rem(80)}})
+      min-height: $title-width
+
+    &-exp-wrapper
+      top: 0.1852vh
+      right: -$exp-size
+      pointer-events: none
+      position: absolute
+      text-align: left
+      overflow: hidden
+
+      .exp
+        top: -2.0833vh
+        position: relative
+        font-size: $exp-size
+        line-height: $exp-size
+        height: $exp-size
+        width: $exp-size
 
 .slider-indicators
   position: absolute
@@ -74,6 +101,7 @@
   display: flex
   justify-content: space-between
   clip-path: $clip-polygon
+  z-index: 0
   --opacity-prev: 1
 
   .center
@@ -81,20 +109,19 @@
 
   p
     position: relative
-    font-size: 40px
-    font-weight: 200
+    font-size: $indicator-size
+    font-weight: $indicator-weight
     will-change: transform
     opacity: var(--opacity-prev)
 
 .slider-preview
   position: absolute
-  bottom: 2.5em
-  right: 2.5em
-  width: 34%
-  max-height: 5vh
-  min-height: 4.6vh
+  bottom: $preview-position
+  right: $preview-position
+  width: $preview-width
+  height: clamp(4.6dvh, 10%, 5dvh)
   display: flex
-  gap: 0.3em
+  gap: 0.3rem
 
   .preview
     --opacity-prev: 1
@@ -113,33 +140,34 @@
       left: 0
       width: 100%
       height: 100%
-      background-color: rgba(0, 0, 0, 0.5)
+      background-color: $preview-bg-black
       transition: 0.3s ease
       opacity: var(--opacity-prev)
 
 .slider-preview .active::after
-  background-color: rgba(0, 0, 0, 0)
+  background-color: $preview-bg-visible
 
 .nav
-  position: relative
-  width: 100%
+  position: fixed
+  left: 50%
+  transform: translateX(-50%)
+  display: flex
   z-index: 10
+  margin: 2.5rem 0
 
   nav
-    position: fixed
-    width: 100%
-    padding: 2.5em
+    position: relative
     display: flex
     justify-content: center
     align-items: center
-    gap: 3em
+    gap: 3rem
 
-    &-item
+    .nav-item
       clip-path: $clip-polygon
 
       a
         font-weight: 300
-        font-size: 1em
+        font-size: 1rem
         position: relative
         text-decoration: none
         color: #fff
@@ -168,17 +196,7 @@
   width: 100%
   height: 100%
   display: flex
-  gap: 1em
-  // background-color: #111;
-  // background-image: linear-gradient(
-  //     rgba(255, 255, 255, 0.07) 2px,
-  //     transparent 2px
-  //   ),
-  //   linear-gradient(90deg, rgba(255, 255, 255, 0.07) 2px, transparent 2px),
-  //   linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-  //   linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px
-  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px
+  gap: 1rem
 
   .col
     position: relative
@@ -188,12 +206,12 @@
     width: 110%
     display: flex
     flex-direction: column
-    gap: 1em
+    gap: 1rem
 
     .item
       position: relative
-      width: 20vw
-      height: 20vh
+      width: 20dvw
+      height: 20dvh
       background-color: gray
       overflow: hidden
 
@@ -210,29 +228,3 @@
 .c-2 .item,
 .c-4 .item
   top: -100%
-
-@media screen and (max-width: 900px)
-  .slide-num
-    text-align: left
-    padding-left: 2em
-    margin-bottom: 2.5em
-
-  .title
-    font-size: 30px
-
-  .icon,
-  .icon-2
-    padding: 0 1em
-    font-size: 16px
-
-  .slider-indicators
-    width: 90%
-
-  .slider-preview
-    left: 50%
-    transform: translateX(-50%)
-    width: 90%
-    bottom: 5em
-
-  .slider-title-wrapper p
-    font-size: 30px

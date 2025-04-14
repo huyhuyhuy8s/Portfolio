@@ -1,4 +1,5 @@
 @use "variable" as *
+@use "sass:map"
 
 .about
   color: #fff
@@ -8,6 +9,8 @@
   overflow: scroll
   position: relative
   scrollbar-width: none
+  font-size: 2.8125vw
+  line-height: 3.6458vw
 
   &-me
     display: flex
@@ -21,12 +24,16 @@
     scrollbar-width: none
     gap: 14.5833vw
 
+    @media (min-width: map.get($breakpoints, 'md'))
+      margin-left: calc(50% - rem(64))
+      padding: 17.7083vw 0
+      width: 50.1042vw
+
     > section
       width: 90%
 
       .content
         margin-top: 4.1667vw
-        margin-left: 82px
         display: flex
         flex-direction: column
         gap: 3.2292vw
@@ -40,6 +47,16 @@
     p
       position: relative
 
+    a
+      position: relative
+      display: block
+      overflow: hidden
+      font-size: 100%
+      text-decoration: none
+      color: inherit
+      font-weight: inherit
+      cursor: pointer
+
     .outer,
     .title,
     .sub-text
@@ -50,3 +67,10 @@
 
       .inner
         position: relative
+
+        a
+          position: relative
+          font-size: 100%
+          text-decoration: none
+          color: inherit
+          font-weight: inherit

@@ -2,9 +2,21 @@ import React, { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { useGSAP } from "@gsap/react";
-import sliderConfig from "../config/sliderConfig";
-import "../styles/main.scss";
+import "../sass/main.sass";
 import LocomotiveScroll from "locomotive-scroll";
+
+// Configs
+import sliderConfig from "../config/sliderConfig";
+import aboutConfig from "../config/aboutConfig";
+
+// Components
+import About from "./about/About";
+import Screen from "./screens/Screen";
+import Container from "./container/Container";
+
+// Helper
+import Nav from "./nav/Nav";
+import Sliders from "./sliders/Sliders";
 
 gsap.registerPlugin(CustomEase);
 const hop = CustomEase.create(
@@ -16,6 +28,7 @@ const Slider = () => {
   const [first, setFirst] = useState(false);
   const [currentImg, setCurrentImg] = useState(1);
   const [currentNav, setCurrentNav] = useState(1);
+  const [currentExp, setCurrentExp] = useState(1);
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
   const sliderImagesRef = useRef(null);
@@ -28,7 +41,6 @@ const Slider = () => {
   const scrollRef = React.createRef();
 
   // Use GSAP with contextSafe for better performance and cleanup
-
   useGSAP(
     (context, contextSafe) => {
       //#region Loader animation timeline
@@ -36,7 +48,6 @@ const Slider = () => {
         console.log("Run loader");
         gsap.set(".about", { zIndex: -1 });
         gsap.set(".screen-main", {
-          // opacity: 0,
           zIndex: 89,
           top: 0,
         });
@@ -189,6 +200,19 @@ const Slider = () => {
     { scope: sliderRef, dependencies: [first] }
   );
 
+  useGSAP(() => {
+    new LocomotiveScroll({
+      el: aboutRef.current,
+      smooth: true,
+      smartphone: {
+        smooth: true,
+      },
+      tablet: {
+        smooth: true,
+      },
+    });
+  });
+
   // Nav update
   useGSAP(
     (context, contextSafe) => {
@@ -227,7 +251,7 @@ const Slider = () => {
         gsap.set(".about", { opacity: 1, zIndex: 2 });
         gsap.set(".screen-alt", {
           opacity: 1,
-          zIndex: 1,
+          zIndex: 2,
           top: "100%",
         });
 
@@ -237,6 +261,24 @@ const Slider = () => {
           duration: 1,
           ease: "power4.out",
         });
+        tl.to(
+          ".slider-title-wrapper, .preview img, .slider-counter>div",
+          {
+            top: `${sliderConfig.totalSlides * 100}%`,
+            duration: 1.5,
+            ease: "expo.inOut",
+          },
+          "<"
+        );
+        tl.to(
+          ".preview, .slider-indicators",
+          {
+            "--opacity-prev": 0,
+            duration: 1,
+            ease: "expo.inOut",
+          },
+          "-=2"
+        );
         tl.fromTo(
           ".screen-alt",
           {
@@ -247,7 +289,7 @@ const Slider = () => {
             duration: sliderConfig.animation.aboveTransitionDuration,
             ease: "power4.out",
           },
-          "-=1"
+          "-=1.5"
         );
         tl.to(
           ".screen-alt",
@@ -262,7 +304,7 @@ const Slider = () => {
           ".about",
           {
             top: 0,
-            duration: 1.5,
+            duration: 1.25,
             ease: "expo.inOut",
           },
           "-=1.5"
@@ -272,27 +314,8 @@ const Slider = () => {
           {
             top: "5.6458vw",
           },
-          { top: 0, duration: 1, ease: hop, stagger: 0.125 },
+          { top: 0, duration: 0.75, ease: hop, stagger: 0.1 },
           "-=0.5"
-        );
-        tl.to(
-          ".slider-title-wrapper, .preview img, .slider-counter>div",
-          {
-            top: `${sliderConfig.totalSlides * 100}%`,
-            duration: 1.5,
-            ease: "expo.inOut",
-            delay: -1,
-          },
-          "-=2"
-        );
-        tl.to(
-          ".preview, .slider-indicators",
-          {
-            "--opacity-prev": 0,
-            duration: 1,
-            ease: "expo.inOut",
-          },
-          "<"
         );
       });
       if (first && currentNav === sliderConfig.nav.indexOf("About") + 1)
@@ -301,39 +324,26 @@ const Slider = () => {
     { scope: [sliderRef, aboutRef], dependencies: [currentNav] }
   );
 
-  useGSAP((context, contextSafe) => {
-    const scroll = new LocomotiveScroll({
-      el: aboutRef.current,
-      smooth: true,
-      mobile: {
-        smooth: true,
-      },
-      tablet: {
-        smooth: true,
-      },
-    });
-  });
-
   // Nav Work
   useGSAP(
     (context, contextSafe) => {
       const work = contextSafe(() => {
         console.log("Run work");
-        gsap.set(".slider-images", {
-          top: 0,
-          scale: 1.5,
-        });
         const tl = gsap.timeline({ delay: 0 });
         tl.to(".screen-alt", {
           opacity: 0,
-          duration: 1.5,
-          ease: hop,
+          duration: 1,
+          zIndex: -1,
+          ease: "power2.inOut",
         });
-        tl.to(
+        tl.fromTo(
           ".slider-title-wrapper, .preview img, .slider-counter>div",
           {
+            top: "-200%",
+          },
+          {
             top: "0",
-            duration: 1,
+            duration: 0.75,
             ease: "expo.inOut",
           },
           "<"
@@ -347,15 +357,19 @@ const Slider = () => {
           },
           "<"
         );
-        tl.to(
+        tl.fromTo(
           ".slider-images",
           {
             top: 0,
+            scale: 2,
+          },
+          {
+            top: 0,
             scale: 1,
-            duration: 1.5,
+            duration: 1,
             ease: hop,
           },
-          "<"
+          "-=1.5"
         );
         tl.to(
           ".about",
@@ -379,7 +393,7 @@ const Slider = () => {
     (context, contextSafe) => {
       const updateCounterAndTitlePosition = contextSafe(() => {
         const titleHeight = document.querySelector(
-          ".slider-title-wrapper p"
+          ".slider-title-wrapper .slider-title-wrapper-title"
         ).offsetHeight;
         const counterY = -40 * (currentImg - 1);
         const titleY = -titleHeight * (currentImg - 1);
@@ -402,6 +416,84 @@ const Slider = () => {
     { dependencies: [currentImg], scope: sliderRef }
   );
 
+  // Hover Exp title
+  useGSAP(
+    (context, contextSafe) => {
+      const updateExp = contextSafe(() => {
+        const wrappers = gsap.utils.toArray(".slider-title-wrapper-title");
+        const elem = wrappers[currentExp - 1].children[0].children[0];
+        gsap.to(elem, {
+          top: 0,
+          duration: 0.4,
+          ease: "power4.inOut",
+        });
+      });
+      const resetExp = contextSafe(() => {
+        const wrappers = gsap.utils.toArray(".slider-title-wrapper-title");
+        wrappers.forEach((wrapper) => {
+          const elem = wrapper.children[0].children[0];
+          gsap.to(elem, {
+            top: -elem.offsetHeight,
+            duration: 0.4,
+            ease: "power4.inOut",
+          });
+        });
+      });
+      if (currentExp === 0) resetExp();
+      else updateExp();
+    },
+    { dependencies: [currentExp] }
+  );
+
+  const cleanupSlides = () => {
+    const imgElements = document.querySelectorAll(".slider-images .img");
+    if (imgElements.length > sliderConfig.totalSlides) {
+      imgElements[0].remove();
+    }
+  };
+
+  const handleClick = (event) => {
+    const sliderWidth = sliderRef.current.clientWidth;
+    const clickPosition = event.clientX;
+    const sliderPreview = document.querySelector(".slider-preview");
+
+    if (sliderPreview.contains(event.target)) {
+      const clickedPrev = event.target.closest(".preview");
+      if (clickedPrev) {
+        const clickedIndex =
+          Array.from(document.querySelectorAll(".preview")).indexOf(
+            clickedPrev
+          ) + 1;
+        if (clickedIndex !== currentImg) {
+          if (clickedIndex < currentImg) {
+            setCurrentImg(clickedIndex);
+            animateSlide("left");
+          } else {
+            setCurrentImg(clickedIndex);
+            animateSlide("right");
+          }
+        }
+      }
+      return;
+    }
+
+    if (
+      clickPosition < sliderWidth / 2 &&
+      currentImg !== 1 &&
+      event.target.tagName !== "A"
+    ) {
+      setCurrentImg((prev) => prev - 1);
+      animateSlide("left");
+    } else if (
+      clickPosition > sliderWidth / 2 &&
+      currentImg !== sliderConfig.totalSlides &&
+      event.target.tagName !== "A"
+    ) {
+      setCurrentImg((prev) => prev + 1);
+      animateSlide("right");
+    }
+  };
+
   // Handle slide animation
   const animateSlide = (direction) => {
     const currentSlide =
@@ -413,7 +505,9 @@ const Slider = () => {
     // Calculate the next image index based on direction
     let nextImgIndex;
     if (direction === "left") {
+      console.log("currentImg", currentImg);
       nextImgIndex = currentImg - 1;
+      console.log("currentImg", currentImg);
     } else {
       nextImgIndex = currentImg + 1;
     }
@@ -465,70 +559,6 @@ const Slider = () => {
     });
   };
 
-  const cleanupSlides = () => {
-    const imgElements = document.querySelectorAll(".slider-images .img");
-    if (imgElements.length > sliderConfig.totalSlides) {
-      imgElements[0].remove();
-    }
-  };
-
-  const handleClick = (event) => {
-    const sliderWidth = sliderRef.current.clientWidth;
-    const clickPosition = event.clientX;
-    const sliderPreview = document.querySelector(".slider-preview");
-
-    if (sliderPreview.contains(event.target)) {
-      const clickedPrev = event.target.closest(".preview");
-      if (clickedPrev) {
-        const clickedIndex =
-          Array.from(document.querySelectorAll(".preview")).indexOf(
-            clickedPrev
-          ) + 1;
-        if (clickedIndex !== currentImg) {
-          if (clickedIndex < currentImg) {
-            setCurrentImg(clickedIndex);
-            animateSlide("left");
-          } else {
-            setCurrentImg(clickedIndex);
-            animateSlide("right");
-          }
-        }
-      }
-      return;
-    }
-
-    if (
-      clickPosition < sliderWidth / 2 &&
-      currentImg !== 1 &&
-      event.target.tagName !== "A"
-    ) {
-      setCurrentImg((prev) => prev - 1);
-      animateSlide("left");
-    } else if (
-      clickPosition > sliderWidth / 2 &&
-      currentImg !== sliderConfig.totalSlides &&
-      event.target.tagName !== "A"
-    ) {
-      setCurrentImg((prev) => prev + 1);
-      animateSlide("right");
-    }
-  };
-
-  // Helper function to get image path
-  const getImagePath = (index) => {
-    return `${sliderConfig.imagePaths.basePath}${index}${sliderConfig.imagePaths.extension}`;
-  };
-
-  const handleClickAbout = (event) => {
-    const clickedNav = event.target.closest(".nav-item");
-    if (clickedNav) {
-      setCurrentNav(
-        Array.from(document.querySelectorAll(".nav-item")).indexOf(clickedNav) +
-          1
-      );
-    }
-  };
-
   return (
     <div
       className="slider"
@@ -536,239 +566,40 @@ const Slider = () => {
       onClick={handleClick}
       data-scroll-container
     >
-      <div className="screen screen-main"></div>
-      <div className="screen screen-alt"></div>
-      <div className="container" ref={containerRef}>
-        {Array.from({ length: Math.min(5, sliderConfig.totalSlides) }).map(
-          (_, colIndex) => (
-            <div key={colIndex + 1} className={`col c-${colIndex + 1}`}>
-              {Array.from({
-                length: Math.min(5, sliderConfig.totalSlides),
-              }).map((_, itemIndex) => {
-                // For c-3, we want to show img1 in the third position
-                if (colIndex === 2 && itemIndex === 2) {
-                  // c-3, third item (index 2)
-                  return (
-                    <div key={itemIndex + 1} className="item">
-                      <img src={getImagePath(currentImg)} alt="" />
-                    </div>
-                  );
-                }
-                return (
-                  <div key={itemIndex + 1} className="item">
-                    <img
-                      src={getImagePath(
-                        gsap.utils.random(
-                          1,
-                          sliderConfig.totalSlides,
-                          1,
-                          true
-                        )()
-                      )}
-                      alt=""
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          )
-        )}
-      </div>
+      <Screen className="screen-main" />
+      <Screen className="screen-alt" />
+      <Container
+        containerRef={containerRef}
+        totalSlides={sliderConfig.totalSlides}
+        basePath={sliderConfig.imagePaths.basePath}
+        extension={sliderConfig.imagePaths.extension}
+        currentImg={currentImg}
+      />
 
-      <div className="slider-elem slider-images" ref={sliderImagesRef}>
-        <div className="img">
-          <img src={getImagePath(1)} alt="" />
-        </div>
-      </div>
+      <Sliders
+        sliderImagesRef={sliderImagesRef}
+        titleWrapperRef={titleWrapperRef}
+        sliderConfig={sliderConfig}
+        setCurrentExp={setCurrentExp}
+        counterRef={counterRef}
+        currentImg={currentImg}
+        indicatorsRef={indicatorsRef}
+      />
 
-      <div className="slider-elem slider-title">
-        <div className="slider-title-wrapper" ref={titleWrapperRef}>
-          {sliderConfig.titles.map((title, index) => (
-            <p key={index}>{title}</p>
-          ))}
-        </div>
-      </div>
+      <Nav
+        className="nav"
+        navRef={navRef}
+        nav={sliderConfig.nav}
+        currentNav={currentNav}
+        setCurrentNav={setCurrentNav}
+      />
 
-      <div className="slider-elem slider-counter">
-        <div className="counter" ref={counterRef}>
-          {Array.from({ length: sliderConfig.totalSlides }).map((_, index) => (
-            <p key={index + 1}>{index + 1}</p>
-          ))}
-        </div>
-        <div>
-          <p>&mdash;</p>
-        </div>
-        <div>
-          <p>{sliderConfig.totalSlides}</p>
-        </div>
-      </div>
-
-      <div className="slider-elem slider-preview">
-        {Array.from({ length: sliderConfig.totalSlides }).map((_, index) => (
-          <div
-            key={index + 1}
-            className={`preview ${currentImg === index + 1 ? "active" : ""}`}
-          >
-            <img src={getImagePath(index + 1)} alt="" />
-          </div>
-        ))}
-      </div>
-
-      <div className="slider-elem slider-indicators" ref={indicatorsRef}>
-        <p>+</p>
-        <p>+</p>
-      </div>
-
-      <div className="slider-elem nav" ref={navRef}>
-        <nav>
-          {sliderConfig.nav.map((item, index) => (
-            <div className="nav-item" key={index}>
-              <a
-                href="#"
-                className={`${item} ${
-                  index + 1 === currentNav ? "active" : ""
-                }`}
-                onClick={handleClickAbout}
-              >
-                {item}
-              </a>
-            </div>
-          ))}
-        </nav>
-      </div>
-
-      <div className="about" ref={aboutRef}>
-        <div className="about-wrapper" ref={scrollRef}>
-          <section className="about-me">
-            <p>
-              <span className="outer">
-                <span className="inner">I am a dedicated front-end</span>
-              </span>
-              <span className="outer">
-                <span className="inner">developer intern with hands-on</span>
-              </span>
-              <span className="outer">
-                <span className="inner">experience in React, JavaScript,</span>
-              </span>
-              <span className="outer">
-                <span className="inner">and modern web technologies.</span>
-              </span>
-            </p>
-            <p>
-              <span className="outer">
-                <span className="inner">
-                  I am always striving to learn about
-                </span>
-              </span>
-              <span className="outer">
-                <span className="inner">
-                  the field's newest and cutting edge
-                </span>
-              </span>
-              <span className="outer">
-                <span className="inner">technologies and frameworks.</span>
-              </span>
-            </p>
-            <p>
-              <span className="outer">
-                <span className="inner">I am passionate about creating</span>
-              </span>
-              <span className="outer">
-                <span className="inner">
-                  user-friendly interfaces and eager
-                </span>
-              </span>
-              <span className="outer">
-                <span className="inner">to contribute to innovative web</span>
-              </span>
-              <span className="outer">
-                <span className="inner">development initiatives.</span>
-              </span>
-            </p>
-          </section>
-          <section className="education">
-            <div className="title">
-              <span className="inner">Education</span>
-            </div>
-            <ul className="content">
-              <li className="elem">
-                <span className="outer">
-                  <span className="inner">
-                    Engineer of Information Technology
-                  </span>
-                </span>
-                <span className="outer">
-                  <span className="inner">HCMC University of Education</span>
-                </span>
-                <span className="outer">
-                  <span className="inner">and Technology</span>
-                </span>
-                <span className="sub-text">
-                  <span className="inner">2022 - 2026</span>
-                </span>
-              </li>
-            </ul>
-          </section>
-          <section className="projects">
-            <div className="title" data-scroll data-scroll-speed="-1.5">
-              <span className="inner">Projects</span>
-            </div>
-            <ul className="content">
-              <li className="elem">
-                <span className="outer">
-                  <span className="inner">Personal Portfolio</span>
-                </span>
-                <span className="outer">
-                  <span className="inner">Based on </span>
-                </span>
-                <span className="sub-text">
-                  <span className="inner">Apr 2025 - Present</span>
-                </span>
-              </li>
-              <li className="elem">
-                <span className="outer">
-                  <span className="inner">Came</span>
-                </span>
-                <span className="outer">
-                  <span className="inner">A Cafe Managements</span>
-                </span>
-                <span className="sub-text">
-                  <span className="inner">Jan 2025 - Present</span>
-                </span>
-              </li>
-              <li className="elem">
-                <span className="outer">
-                  <span className="inner">Newshub</span>
-                </span>
-                <span className="outer">
-                  <span className="inner">Newspaper Hub</span>
-                </span>
-                <span className="sub-text">
-                  <span className="inner">Nov 2024 - Dec 2024</span>
-                </span>
-              </li>
-            </ul>
-          </section>
-          <section className="certifications">
-            <div className="title">
-              <span className="inner">Certifications</span>
-            </div>
-            <ul className="content">
-              <li className="elem certification">
-                <span className="outer">
-                  <span className="inner">Full Stack Web Development</span>
-                </span>
-                <span className="outer">
-                  <span className="inner">University of Helsinki</span>
-                </span>
-                <span className="sub-text">
-                  <span className="inner">April 2025</span>
-                </span>
-              </li>
-            </ul>
-          </section>
-        </div>
-      </div>
+      <About
+        aboutRef={aboutRef}
+        aboutWrapperRef={scrollRef}
+        aboutMe={aboutConfig.aboutMe}
+        aboutSections={aboutConfig.aboutSections}
+      />
     </div>
   );
 };
